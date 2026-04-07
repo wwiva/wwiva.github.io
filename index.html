@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>wwiva</title>
+    <link rel="icon" type="image/png" href="me.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #f8fafc 0%, #eef2f5 100%);
+            font-family: system-ui, -apple-system, 'Segoe UI', 'Inter', 'Helvetica Neue', sans-serif;
+            color: #1a2c3e;
+            line-height: 1.4;
+            padding: 2rem 1.5rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bio-container {
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            align-items: stretch;
+            flex: 1;
+        }
+
+        .side-bar {
+            flex: 1.2;
+            min-width: 260px;
+            background: rgba(255,255,255,0.75);
+            backdrop-filter: blur(2px);
+            border-radius: 2.5rem;
+            padding: 2rem 1.8rem;
+            box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(156, 180, 194, 0.15);
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .side-bar:hover {
+            box-shadow: 0 20px 32px -12px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(100, 140, 160, 0.2);
+        }
+
+        .avatar {
+            width: 130px;
+            height: 130px;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+            border-radius: 30px;
+            transform: rotate(3deg);
+            overflow: hidden;
+            box-shadow: 0 12px 22px -8px rgba(0, 0, 0, 0.12);
+        }
+        
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .avatar:hover {
+            transform: scale(1.01) rotate(2deg);
+        }
+
+        .side-name {
+            font-size: 2rem;
+            font-weight: 620;
+            letter-spacing: -0.3px;
+            background: linear-gradient(120deg, #1e3b4f, #2c5a74);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 0.25rem;
+        }
+
+        .contact-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #eef3f9;
+            padding: 0.4rem 1rem;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            color: #1f4e6e;
+            margin-top: 0.8rem;
+            transition: 0.15s;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .contact-chip:hover {
+            background: #e2eaf2;
+            transform: translateY(-2px);
+        }
+
+        hr {
+            margin: 1.2rem 0;
+            border: none;
+            height: 1px;
+            background: radial-gradient(circle, #cbdbe2, transparent);
+        }
+
+        .stats-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+            margin: 1rem 0 0.5rem 0;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 1.2rem;
+            padding: 0.7rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s;
+            border: 1px solid rgba(156, 180, 194, 0.2);
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #3e6f8c;
+        }
+
+        .stat-value {
+            font-size: 1.1rem;
+            font-weight: 620;
+            color: #1a3e53;
+            font-feature-settings: "tnum";
+            font-family: monospace;
+        }
+
+        .loading-stats {
+            font-size: 0.7rem;
+            color: #6f8ea3;
+            text-align: center;
+            padding: 0.5rem;
+            font-style: italic;
+        }
+
+        .main-content {
+            flex: 3;
+            min-width: 260px;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .description {
+            background: #ffffffcc;
+            backdrop-filter: blur(4px);
+            border-radius: 2rem;
+            padding: 1.6rem 2rem;
+            border: 1px solid #ffffffc9;
+            box-shadow: 0 8px 20px -12px rgba(0, 0, 0, 0.1);
+        }
+
+        .description p {
+            margin-bottom: 0.6rem;
+            font-size: 0.95rem;
+            color: #1f3e4f;
+        }
+
+        .description strong {
+            color: #1b6b8f;
+            font-weight: 600;
+        }
+
+        .projects-bar {
+            background: rgba(255,255,245,0.5);
+            border-radius: 2rem;
+            padding: 1.8rem 1.8rem;
+            backdrop-filter: blur(2px);
+            border: 1px solid #eef3fc;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .section-label {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            margin-bottom: 1.2rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .section-label h3 {
+            font-weight: 580;
+            font-size: 1.4rem;
+            letter-spacing: -0.2px;
+            background: linear-gradient(135deg, #2b5f7a, #1f4a62);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .project-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            align-items: stretch;
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 0.75rem 1rem;
+            width: 100%;
+            transition: all 0.2s ease;
+            border: 1px solid #eaf0f6;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+            cursor: pointer;
+            height: 100%;
+        }
+
+        .project-card:hover {
+            transform: translateY(-2px);
+            border-color: #cae0ed;
+            box-shadow: 0 8px 16px -8px rgba(0, 0, 0, 0.1);
+            background: #ffffff;
+        }
+
+        .project-title {
+            font-weight: 620;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            justify-content: space-between;
+            margin-bottom: 0.1rem;
+        }
+        
+        .project-link-icon {
+            font-size: 0.65rem;
+            opacity: 0.6;
+            transition: opacity 0.2s;
+        }
+        
+        .project-card:hover .project-link-icon {
+            opacity: 1;
+        }
+
+        .project-desc {
+            font-size: 0.7rem;
+            color: #56748c;
+            line-height: 1.3;
+            margin-bottom: 0.1rem;
+            flex: 1;
+        }
+
+        .project-tech {
+            font-size: 0.55rem;
+            font-family: monospace;
+            background: #ecf3f8;
+            display: inline-block;
+            width: fit-content;
+            padding: 0.1rem 0.5rem;
+            border-radius: 20px;
+            color: #2c607c;
+            margin-top: 0.05rem;
+            margin-bottom: 0.05rem;
+        }
+        
+        .project-url {
+            font-size: 0.58rem;
+            color: #6f8ea3;
+            text-decoration: underline;
+            text-decoration-thickness: 1px;
+            text-underline-offset: 3px;
+            word-break: break-all;
+            margin-top: 0.05rem;
+            display: inline-block;
+        }
+        
+        .project-card .project-url {
+            text-decoration: none;
+            color: #4682b4;
+            font-family: monospace;
+            font-size: 0.58rem;
+        }
+        
+        .project-card .project-url:hover {
+            text-decoration: underline;
+        }
+
+        .quote {
+            font-style: italic;
+            border-left: 3px solid #95bfda;
+            padding-left: 1rem;
+            margin: 1rem 0 0.5rem;
+            color: #436c84;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 780px) {
+            body {
+                padding: 1rem;
+            }
+            .bio-container {
+                flex-direction: column;
+            }
+            .side-bar {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                gap: 1rem;
+            }
+            .avatar {
+                width: 80px;
+                height: 80px;
+                margin-bottom: 0;
+            }
+            .side-info {
+                flex: 1;
+            }
+            .project-list {
+                grid-template-columns: 1fr;
+                gap: 0.7rem;
+            }
+            .project-card {
+                padding: 0.7rem 0.9rem;
+            }
+            .stats-grid {
+                width: 100%;
+            }
+            .description {
+                padding: 1.3rem 1.5rem;
+            }
+        }
+
+        .footer-note {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.7rem;
+            color: #8ba3b2;
+            border-top: 1px solid #dee9f0;
+            padding-top: 1.5rem;
+            max-width: 1400px;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        a {
+            text-decoration: none;
+        }
+        .contact-chip {
+            cursor: pointer;
+        }
+
+        html, body {
+            height: 100%;
+        }
+        .bio-container {
+            flex: 1 0 auto;
+        }
+        .side-bar .side-info {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+
+<div class="bio-container">
+    <aside class="side-bar">
+        <div class="avatar">
+            <img src="me.png" alt="wwiva-avatar" onerror="this.src='https://github.com/wwiva.png'">
+        </div>
+        <div class="side-info">
+            <div class="side-name">wwiva</div>
+            <div class="stats-grid" id="githubStats">
+                <div class="loading-stats">📡 loading github stats...</div>
+            </div>
+        </div>
+        <hr>
+        <div style="font-size: 0.75rem; color: #547184;"><br>
+        </div>
+    </aside>
+
+    <div class="main-content">
+        <div class="description">
+            <p><strong>
+		hello, im wwiva</strong> — i create various low-level projects.<br>
+            	i like doing things myself rather than using ready-made solutions—though not always...<br>
+		currently working on my linker and compiler.
+	    </p>
+        </div>
+
+        <div class="projects-bar">
+            <div class="section-label">
+                <h3>favorite projects</h3>
+            </div>
+            <div class="project-list">
+                <a href="https://github.com/wwiva/slnk" target="_blank" class="project-card">
+                    <div class="project-title">
+                        slnk
+                        <span class="project-link-icon">↗</span>
+                    </div>
+                    <div class="project-desc">A simple PE/ELF object file linker.</div>
+                    <div class="project-tech">rust</div>
+                    <div class="project-url">github.com/wwiva/slnk</div>
+                </a>
+		<a href="https://github.com/wwiva/delta-vm" target="_blank" class="project-card">
+                    <div class="project-title">
+                        delta-vm
+                        <span class="project-link-icon">↗</span>
+                    </div>
+                    <div class="project-desc">A register-based bytecode virtual machine.</div>
+                    <div class="project-tech">rust · cranelift</div>
+                    <div class="project-url">github.com/wwiva/delta-vm</div>
+                </a>
+		<a href="https://github.com/wwiva/mus-asm" target="_blank" class="project-card">
+                    <div class="project-title">
+                        mus-asm
+                        <span class="project-link-icon">↗</span>
+                    </div>
+                    <div class="project-desc">A low-level synthesis engine.</div>
+                    <div class="project-tech">rust</div>
+                    <div class="project-url">github.com/wwiva/mus-asm</div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="footer-note">
+    wwiva.github.io · wwiva 
+</div>
+
+<script>
+    (function() {
+        const GITHUB_USERNAME = 'wwiva';
+        const statsContainer = document.getElementById('githubStats');
+
+        async function fetchGitHubStats() {
+            if (!statsContainer) return;
+            
+            statsContainer.innerHTML = '<div class="loading-stats">📡 loading github stats...</div>';
+            
+            try {
+                const userUrl = `https://api.github.com/users/${GITHUB_USERNAME}`;
+                const reposUrl = `https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100&sort=updated`;
+                
+                const [userRes, reposRes] = await Promise.all([
+                    fetch(userUrl),
+                    fetch(reposUrl)
+                ]);
+                
+                if (!userRes.ok || !reposRes.ok) {
+                    throw new Error(`GitHub API error: ${userRes.status} ${reposRes.status}`);
+                }
+                
+                const userData = await userRes.json();
+                const reposData = await reposRes.json();
+                
+                const publicRepos = userData.public_repos || reposData.length;
+                
+                let totalCommits2025 = 0;
+                const commitPromises = reposData.slice(0, 15).map(async (repo) => {
+                    try {
+                        const commitsUrl = `https://api.github.com/repos/${GITHUB_USERNAME}/${repo.name}/commits?per_page=1&author=${GITHUB_USERNAME}`;
+                        const commitRes = await fetch(commitsUrl);
+                        if (commitRes.ok) {
+                            const linkHeader = commitRes.headers.get('Link');
+                            if (linkHeader && linkHeader.includes('rel="last"')) {
+                                const lastMatch = linkHeader.match(/&page=(\d+)>; rel="last"/);
+                                if (lastMatch) {
+                                    return parseInt(lastMatch[1], 10);
+                                }
+                            }
+                            const commits = await commitRes.json();
+                            if (Array.isArray(commits)) return commits.length;
+                        }
+                        return 0;
+                    } catch (e) {
+                        return 0;
+                    }
+                });
+                
+                const commitCounts = await Promise.all(commitPromises);
+                totalCommits2025 = commitCounts.reduce((sum, count) => sum + count, 0);
+                
+                let totalStars = 0;
+                let totalForks = 0;
+                reposData.forEach(repo => {
+                    if (repo.stargazers_count) totalStars += repo.stargazers_count;
+                    if (repo.forks_count) totalForks += repo.forks_count;
+                });
+                
+                const createdAt = new Date(userData.created_at);
+                const yearsOnGitHub = Math.max(1, Math.floor((new Date() - createdAt) / (1000 * 60 * 60 * 24 * 365)));
+                
+                statsContainer.innerHTML = `
+                    <div class="stat-item">
+                        <span class="stat-label">public repos</span>
+                        <span class="stat-value">${publicRepos}</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">total stars</span>
+                        <span class="stat-value">${totalStars}</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">total forks</span>
+                        <span class="stat-value">${totalForks}</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">commits (est.)</span>
+                        <span class="stat-value">${totalCommits2025.toLocaleString()}</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">github join</span>
+                        <span class="stat-value">${userData.created_at ? new Date(userData.created_at).getFullYear() : '2021'}</span>
+                    </div>
+                `;
+                
+                const extraStat = document.createElement('div');
+                extraStat.className = 'stat-item';
+                extraStat.style.marginTop = '0.2rem';
+                extraStat.innerHTML = `
+                    <span class="stat-label">followers</span>
+                    <span class="stat-value">${userData.followers || 0}</span>
+                `;
+                statsContainer.appendChild(extraStat);
+                
+            } catch (error) {
+                console.warn('GitHub stats fetch failed:', error);
+                statsContainer.innerHTML = `
+                    <div class="stat-item">
+                        <span class="stat-label">public repos</span>
+                        <span class="stat-value">9+</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">activity</span>
+                        <span class="stat-value">active</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">focus</span>
+                        <span class="stat-value">systems</span>
+                    </div>
+                    <div class="loading-stats" style="margin-top: 0.25rem;">✨ stats loading fallback — try again later</div>
+                `;
+            }
+        }
+        
+        fetchGitHubStats();
+    })();
+</script>
+
+</body>
+</html>
